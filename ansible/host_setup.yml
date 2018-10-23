@@ -18,7 +18,7 @@
     nodes: >-
       {{ hostvars.localhost.tenks_state[inventory_hostname].nodes
            | default([]) }}
-    libvirt_enable_efi_default: "{{ 'efi' in (nodes | map(attribute='boot_firmware') | map('lower')) }}"    
+    libvirt_enable_efi_default: "{{ 'efi' in (nodes | map(attribute='boot_firmware') | map('lower')) }}"
   tasks:
     - block:
         - name: Configure host for Libvirt
