@@ -22,6 +22,7 @@
     {{ ironic_virtualenv_path }}/bin/openstack baremetal port show
       {{ uuid.stdout }} -f json
   register: port_attributes_output
+  changed_when: false
 
 - name: Set Ironic port attributes
   vars:
