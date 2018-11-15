@@ -14,6 +14,11 @@
     - include_tasks: hypervisor_setup.yml
 
 - hosts: libvirt
+  vars:
+    nodes: >-
+      {{ hostvars.localhost.tenks_state[inventory_hostname].nodes
+           | default([]) }}
+    libvirt_enable_efi_default: "{{ 'efi' in (nodes | map(attribute='boot_firmware') | map('lower')) }}"
   tasks:
     - block:
         - name: Configure host for Libvirt
@@ -29,6 +34,7 @@
                 owner: "{{ libvirt_pool_owner }}"
                 group: "{{ libvirt_pool_group }}"
             libvirt_host_require_vt: "{{ libvirt_require_vt }}"
+            libvirt_host_enable_efi_support: "{{ libvirt_enable_efi | default(libvirt_enable_efi_default) }}"
 
         - name: Set up Virtual BMC daemon
           include_role:
